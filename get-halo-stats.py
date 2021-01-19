@@ -50,10 +50,39 @@ create_folder(base_dir)
 # Should yield 24,480 heatmap images
 # at around 32Kb each, that's ~1.78 GB
 for i in maps:
+    # create base map folders
     map_folder = base_dir+i["name"]+"/"
     create_folder(map_folder)
     for j in weapons:
+        # create base weapon sub-folders
         weapon_folder = map_folder+j["name"]+"/"
         create_folder(weapon_folder)
+        # create Kills and Deaths sub-folders based on weapon number
+        if int(j["value"]) > 127:
+            create_folder(weapon_folder+"Deaths/")
+        else:
+            create_folder(weapon_folder+"Kills/")
         for k in influence:
-            print "http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player=%s&map=%s&wep=%s&inf=%s" % (gamertag, i["value"], j["value"], k["name"])
+            # heatmap url
+            heatmap_url = "http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player=%s&map=%s&wep=%s&inf=%s" \
+            % (gamertag, i["value"], j["value"], k["name"])
+
+            print heatmap_url
+
+            # e.g. Assembly-All-Weapons-Influence-6.jpg
+            # or The Pit-Battle Rifle-Influence-4.jpg
+            filename = i["name"]+"-"+j["name"]+"-"+"Influence-"+k["name"]+".jpg"
+
+            # determine hwether to put into Kills or Deaths Folder
+            file_destination = weapon_folder
+            if int(j["value"]) > 127:
+                file_destination = file_destination+"Deaths/"+filename
+            else:
+                file_destination = file_destination+"Kills/"+filename
+
+            # get heatmap and write to specified location
+            heatmap = requests.get(heatmap_url).content
+            with open(file_destination, 'wb') as handler:
+                handler.write(heatmap)
+            handler.close()
+
