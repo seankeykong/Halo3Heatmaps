@@ -56,4 +56,4 @@ for i in maps:
         weapon_folder = map_folder+j["name"]+"/"
         create_folder(weapon_folder)
         for k in influence:
-            print "http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player="+gamertag+"&map="+i["value"]+"&wep="+j["value"]+"&inf="+k["name"]
+            print "http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player=%s&map=%s&wep=%s&inf=%s" % (gamertag, i["value"], j["value"], k["name"])
