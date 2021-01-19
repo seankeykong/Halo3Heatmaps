@@ -1,10 +1,13 @@
 from bs4 import BeautifulSoup
 import requests
+import os
 
 gamertag = raw_input("Enter Gamertag: ")
 url = "http://halo.bungie.net/stats/halo3/heatmapstats.aspx?player="+gamertag
 page = requests.get(url)
 soup = BeautifulSoup(page.content,"html.parser")
+
+base_dir = "C:/Halo3Heatmaps/"
 
 
 # get all parameters for heatmap endpoint
@@ -33,3 +36,21 @@ for i, val in enumerate(selects):
         elif i == 3: # Influence
             inf_dict = {"name":j.contents[0],"value":str(j["value"])}
             influence.append(inf_dict)
+
+# def create folder
+def create_folder(dir):  
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+# create base folder
+create_folder(base_dir)
+
+# http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player=XXXXX&map=XXX&wep=XXX&inf=X
+for i in maps:
+    map_folder = base_dir+i["name"]+"/"
+    create_folder(map_folder)
+    for j in weapons:
+        weapon_folder = map_folder+j["name"]+"/"
+        create_folder(weapon_folder)
+        for k in influence:
+            print "http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player="+gamertag+"&map="+i["value"]+"&wep="+j["value"]+"&inf="+k["name"]
