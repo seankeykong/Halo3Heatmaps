@@ -7,7 +7,7 @@ url = "http://halo.bungie.net/stats/halo3/heatmapstats.aspx?player="+gamertag
 page = requests.get(url)
 soup = BeautifulSoup(page.content,"html.parser")
 
-base_dir = "C:/Halo3Heatmaps/"
+base_dir = "D:/Halo3Heatmaps/"
 
 
 # get all parameters for heatmap endpoint
@@ -46,6 +46,9 @@ def create_folder(dir):
 create_folder(base_dir)
 
 # http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player=XXXXX&map=XXX&wep=XXX&inf=X
+# Get each influence intensity for each weapon, both kills and deaths, for each map
+# Should yield 24,480 heatmap images
+# at around 32Kb each, that's ~1.78 GB
 for i in maps:
     map_folder = base_dir+i["name"]+"/"
     create_folder(map_folder)
