@@ -67,8 +67,6 @@ for i in maps:
             heatmap_url = "http://halo.bungie.net/stats/Halo3/HeatMap.ashx?player=%s&map=%s&wep=%s&inf=%s" \
             % (gamertag, i["value"], j["value"], k["name"])
 
-            print heatmap_url
-
             # e.g. Assembly-All-Weapons-Influence-6.jpg
             # or The Pit-Battle Rifle-Influence-4.jpg
             filename = i["name"]+"-"+j["name"]+"-"+"Influence-"+k["name"]+".jpg"
@@ -85,4 +83,6 @@ for i in maps:
             with open(file_destination, 'wb') as handler:
                 handler.write(heatmap)
             handler.close()
+
+            print file_destination
 
