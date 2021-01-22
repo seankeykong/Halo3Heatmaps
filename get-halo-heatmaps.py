@@ -79,10 +79,13 @@ for i in maps:
                 file_destination = file_destination+"Kills/"+filename
 
             # get heatmap and write to specified location
-            heatmap = requests.get(heatmap_url).content
-            with open(file_destination, 'wb') as handler:
-                handler.write(heatmap)
-            handler.close()
+            if os.path.isfile(file_destination):
+                pass
+            else:
+                heatmap = requests.get(heatmap_url).content
+                with open(file_destination, 'wb') as handler:
+                    handler.write(heatmap)
+                handler.close()
 
             print file_destination
 
